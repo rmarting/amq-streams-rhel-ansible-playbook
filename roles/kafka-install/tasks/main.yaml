@@ -1,0 +1,4 @@
+---
+- include: so-configuration.yaml
+- include: kafka-installation.yaml
+- include: kafka-configuration.yaml

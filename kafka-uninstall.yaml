@@ -1,0 +1,17 @@
+---
+- name: Uninstall Playbook of an AMQ Streams Environment
+  hosts: amq_lab_environment
+  remote_user: root
+  gather_facts: true
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - {
+        role: kafka-uninstall,
+        kafka_name: 'cluster-01'
+      }
+    - {
+        role: kafka-uninstall,
+        kafka_name: 'cluster-02'
+      }

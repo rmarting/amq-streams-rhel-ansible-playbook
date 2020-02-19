@@ -1,0 +1,45 @@
+---
+- name: Write a myid file based on the position in the group
+  copy: 
+    content: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
+    dest: "{{ zookeeper_data_folder }}/myid"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Set up Apache Zookeeper Properties
+  template:
+    src: "{{ item }}"
+    dest: "{{ kafka_home }}/config/zookeeper.properties"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'zookeeper.properties.j2'
+
+- name: Set up Apache Kafka Properties
+  template:
+    src: "{{ item }}"
+    dest: "{{ kafka_home }}/config/server.properties"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'server.properties.j2'
+
+- name: Install systemd unit file for Apache Zookeeper
+  template:
+    src: zookeeper.service.j2
+    dest: /usr/lib/systemd/system/zookeeper-{{ kafka_name }}.service
+    owner: root
+    mode: '644'
+  notify:
+    - reload systemd
+    - restart zookeeper {{ kafka_name }}
+
+- name: Install systemd unit file for Apache Kafka
+  template:
+    src: kafka.service.j2
+    dest: /usr/lib/systemd/system/kafka-{{ kafka_name }}.service
+    owner: root
+    mode: '644'
+  notify:
+    - reload systemd
+    - restart kafka {{ kafka_name }}

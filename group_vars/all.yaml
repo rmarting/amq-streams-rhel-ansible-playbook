@@ -1,0 +1,25 @@
+# AMQ Streams Instalation Source
+binary:
+  folder: '/tmp/'
+
+# AMQ Streams Version
+kafka:
+  version: '1.3.0'
+
+# OS User to install/execute AMQ Streams
+user:
+  name: 'kafka'
+  shell: '/bin/bash'
+  homedir: 'True'
+
+# Java Home
+java_8_home: '/usr/lib/jvm/jre-1.8.0-openjdk'
+java_11_home: '/usr/lib/jvm/jre-11-openjdk'
+
+# AMQ Streams Home
+kafka_base: '/opt/kafka'
+kafka_home: "{{ kafka_base }}/{{ kafka_name }}"
+
+# Data and Storage folders
+zookeeper_data_folder: "/var/lib/{{ kafka_name }}/zookeeper"
+kafka_storage_folder: "/var/lib/{{ kafka_name }}/kafka"

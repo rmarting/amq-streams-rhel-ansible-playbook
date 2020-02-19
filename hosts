@@ -1,0 +1,14 @@
+[amq_lab_environment]
+rh8amq01
+rh8amq02
+rh8amq03
+
+[zookeepers]
+rh8amq01
+rh8amq02
+rh8amq03
+
+[brokers]
+rh8amq01
+rh8amq02
+rh8amq03

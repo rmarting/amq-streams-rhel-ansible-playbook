@@ -1,0 +1,20 @@
+---
+- name: Install Playbook of an AMQ Streams Environment
+  hosts: amq_lab_environment
+  serial: 1
+  remote_user: root
+  gather_facts: true
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - {
+        role: kafka-install,
+        kafka_name: 'cluster-01',
+        port_offset: '0'
+      }
+    - {
+        role: kafka-install,
+        kafka_name: 'cluster-02',
+        port_offset: '100'
+      }

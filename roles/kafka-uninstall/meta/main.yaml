@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  authors:  Roman Martin Gil (roman.martin@redhat.com)
+  description: AMQ Streams Uninstallation on RHEL Role
+  company: Red Hat
+  license: GNU General Public License
+  min_ansible_version: 2.2.1.0
+  platforms:
+  - name: EL
+    versions:
+    - all
+  galaxy_tags:
+    - apache kafka
+    - apache zookeeper
+    - red hat amq streams
+dependencies:

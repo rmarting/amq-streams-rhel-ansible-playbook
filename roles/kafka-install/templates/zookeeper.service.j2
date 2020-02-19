@@ -1,0 +1,19 @@
+[Unit]
+Description=AMQ Streams Zookeeper Ensemble for {{ kafka_name }}
+After=syslog.target network.target
+
+[Service]
+ExecStart={{ kafka_home }}/bin/zookeeper-server-start.sh {{ kafka_home }}/config/zookeeper.properties
+ExecStop={{ kafka_home }}/bin/zookeeper-server-stop.sh
+
+User={{ user['name'] }}
+Group={{ user['name'] }}
+
+SuccessExitStatus=0 143
+RestartSec=15
+Restart=on-failure
+
+LimitNOFILE=102642
+
+[Install]
+WantedBy=multi-user.target

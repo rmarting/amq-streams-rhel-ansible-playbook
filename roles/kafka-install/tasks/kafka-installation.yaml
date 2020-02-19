@@ -1,0 +1,60 @@
+---
+- name: Upload AMQ Streams binaries on Server
+  copy:
+    src: /{{ binary['folder'] }}/amq-streams-{{ kafka['version'] }}-bin.zip
+    dest: /tmp
+    force: no
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create AMQ Streams temporary folder
+  file:
+    path: '/tmp/kafka'
+    state: directory
+    mode: '755'
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Extract AMQ Streams binaries on temporary folder
+  unarchive:
+    src: /tmp/amq-streams-{{ kafka['version'] }}-bin.zip
+    dest: '/tmp/kafka'
+    remote_src: true
+    keep_newer: yes
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create AMQ Streams folder
+  file:
+    path: "{{ kafka_base }}/{{ kafka_name }}"
+    state: directory
+    mode: '755'
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Copy AMQ Streams binaries on home folder
+  shell: "cp -rf /tmp/kafka/kafka*/* {{ kafka_base }}/{{ kafka_name }}"
+
+- name: Change file ownership to AMQ Streams user
+  file:
+    path: "{{ kafka_base }}/{{ kafka_name }}"
+    state: directory
+    recurse: yes
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create Zookeeper data folder
+  file:
+    path: "{{ zookeeper_data_folder }}"
+    state: directory
+    mode: '755'
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create Apache Kafka storing folder
+  file:
+    path: "{{ kafka_storage_folder }}"
+    state: directory
+    mode: '755'
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"

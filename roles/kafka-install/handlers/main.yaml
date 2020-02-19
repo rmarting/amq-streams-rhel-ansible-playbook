@@ -1,0 +1,12 @@
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: restart zookeeper {{ kafka_name }}
+  service: 
+    name: zookeeper-{{ kafka_name }}
+    state: restarted
+
+- name: restart kafka {{ kafka_name }}
+  service: 
+    name: kafka-{{ kafka_name }} 
+    state: restarted

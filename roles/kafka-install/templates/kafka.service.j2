@@ -1,0 +1,19 @@
+[Unit]
+Description=AMQ Streams Kafka Cluster for {{ kafka_name }}
+After=syslog.target network.target
+
+[Service]
+ExecStart={{ kafka_home }}/bin/kafka-server-start.sh {{ kafka_home }}/config/server.properties
+ExecStop={{ kafka_home }}/bin/kafka-server-stop.sh
+
+User={{ user['name'] }}
+Group={{ user['name'] }}
+
+SuccessExitStatus=0 143
+RestartSec=15
+Restart=on-failure
+
+LimitNOFILE=102642
+
+[Install]
+WantedBy=multi-user.target

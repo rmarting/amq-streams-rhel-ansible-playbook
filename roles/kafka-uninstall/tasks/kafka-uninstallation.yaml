@@ -1,0 +1,61 @@
+---
+# - debug:
+#     msg: "Check path /usr/lib/systemd/system/kf-{{ kafka_name }}.service"
+
+- name: Check if Apache Kafka Service Exists
+  stat:
+    path: /usr/lib/systemd/system/kafka-{{ kafka_name }}.service
+  register: kf_service_status
+
+# - debug:
+#     var: kf_service_status.stat
+
+# - debug:
+#     msg: "Yes, File exists"
+#   when: kf_service_status.stat.exists
+
+# - debug:
+#     msg: "No, File does not exists"
+#   when: kf_service_status.stat.exists == False
+
+- name: Stop Apache Kafka Service
+  service:
+    name: "kafka-{{ kafka_name }}"
+    state: stopped
+  when: kf_service_status.stat.exists
+
+- name: Uninstall Apache Kafka systemd unit file
+  file:
+    path: "/usr/lib/systemd/system/kafka-{{ kafka_name }}.service"
+    owner: root
+    state: absent
+  when: kf_service_status.stat.exists
+  notify:
+    - reload systemd
+
+- name: Check if Apache Zookeeper Service Exists
+  stat:
+    path: "/usr/lib/systemd/system/zookeeper-{{ kafka_name }}.service"
+  register: 'zk_service_status'
+
+- name: Stop Apache Zookeeper Service
+  service:
+    name: "zookeeper-{{ kafka_name }}"
+    state: stopped
+  when: 'zk_service_status.stat.exists'
+
+- name: Uninstall Apache Zookeeper systemd unit file
+  file:
+    path: /usr/lib/systemd/system/zookeeper-{{ kafka_name }}.service
+    owner: root
+    state: absent
+  when: 'zk_service_status.stat.exists'
+  notify:
+    - reload systemd
+
+- name: Remove current version to installed version
+  file:
+    path: '{{ kafka_base }}/{{ kafka_name }}'
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+    state: absent
