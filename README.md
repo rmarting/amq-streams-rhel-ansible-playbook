@@ -82,7 +82,7 @@ java_11_home: '/usr/lib/jvm/jre-11-openjdk'
 kafka_base: '/opt/kafka'
 ```
 
-* **karaf_home**: AMQ Streams Home path where it will installed the cluster. This
+* **kafka_home**: AMQ Streams Home path where it will installed the cluster. This
 variable will be defined for each host with a name. This allow installs more
 instances in the same hosts.
 
