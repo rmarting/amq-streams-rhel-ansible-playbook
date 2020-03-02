@@ -65,3 +65,56 @@
     line: 'securerandom.source=file:/dev/./urandom'
     state: present
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+
+- name: Enable service firewalld
+  service:
+    name: firewalld
+    enabled: yes
+
+- name: Enable Apache Zookeeper client port in firewalld
+  firewalld:
+    port: "{{ (2181|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld
+
+- name: Enable Apache Zookeeper ensemble ports in firewalld
+  firewalld:
+    port: "{{ (2888|int + port_offset|int)|abs }}-{{ (3888|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld
+
+- name: Enable Apache Kafka replication port in firewalld
+  firewalld:
+    port: "{{ (9091|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld
+
+- name: Enable Apache Kafka insecured port in firewalld
+  firewalld:
+    port: "{{ (9092|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld
+
+- name: Enable Apache Kafka secured port in firewalld
+  firewalld:
+    port: "{{ (9093|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld
+
+- name: Enable Apache Kafka authenticated port in firewalld
+  firewalld:
+    port: "{{ (9094|int + port_offset|int)|abs }}/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - reload firewalld

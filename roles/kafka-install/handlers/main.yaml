@@ -1,6 +1,11 @@
 - name: reload systemd
   command: systemctl daemon-reload
 
+- name: reload firewalld
+  service:
+    name: firewalld
+    state: restarted
+
 - name: restart zookeeper {{ kafka_name }}
   service: 
     name: zookeeper-{{ kafka_name }}
